@@ -30,61 +30,45 @@ function printBoard(board) {
 }
 
 // Game play loop
-printBoard(board);
-const input = prompt("Which way? (w/a/s/d): ");
-console.log(input);
+while (playing === true) {
+	printBoard(board);
+	const input = prompt("Which way? (w/a/s/d): ");
 
-while (playing=true){
-	console.clear()
+	let oldRow = playerRow;
+	let oldCol = playerCol;
 
-let newRow = playerRow;
-let newCol = playerCol;
+	// Move player
+	if (input === "w") playerRow--;
+	if (input === "s") playerRow++;
+	if (input === "a") playerCol--;
+	if (input === "d") playerCol++;
 
-printBoard(board);
-const input = prompt("Which way? (w/a/s/d): ");
-console.log(input);
 
-// Move player
-if (input === "w") {
-	playerRow--;
-	console.log(board[playerRow][playerCol]);
-}
-if (input === "s") {
-	playerRow++;
-	console.log(board[playerRow][playerCol]);
-}
-if (input === "a") {
-	playerCol--;
-	console.log(board[playerRow][playerCol]);
-}
-if (input === "d") {
-	playerCol++;
-	console.log(board[playerRow][playerCol]);
-}
+	// Win condition
+	if (board[playerRow][playerCol] === HAT) {
+		console.log("YOU WIN!")
+		break;
+	}
 
-// Win condition
-if ([playerRow][playerCol] === HAT) {
-	console.log("Done!! HAT has been found");
-	playing = false;
-}
+	// Lose condition = drop into hole
+	if (board[playerRow][playerCol] === HOLE) {
+		console.log("YOU DROP INTO A HOLE!")
+		playing = false;
+	}
+	// Lose condition = out of map
+	if (playerRow < 0 || playerRow > 2 || playerCol < 0 || playerCol > 2) {
+		console.log("Out of map!")
+		playing = false;
+	}
 
-// Lose condition
-if ([playerRow][playerCol] === HOLE) {
-	console.log("You Lose!! You drop into a hole")
-	playing = false;
-}
-if ([playerRow] <= -1) {
-	console.log("You Lose!! Out of Map");
-	playing = false;
-}
-if ([playerCol] >= 2) {
-	console.log("You Lose!! Out of Map");
-	playing = false;
-}
+	//if playing false
+	if (playing === false) {
+		console.log("GAME OVER!!")
+		break;
+	}
 
-board[playerRow][playerCol] = EMPTY;
-board[newRow][newCol] = PLAYER;
-playerRow = newRow;
-playerCol = newCol;
+	// Update board
+	board[oldRow][oldCol] = EMPTY;
+	board[playerRow][playerCol] = PLAYER;
 
 }
